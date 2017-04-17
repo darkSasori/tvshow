@@ -1,6 +1,7 @@
 package main
 
 import (
+    "os"
     "net/http"
     "fmt"
     proto "github.com/golang/protobuf/proto"
@@ -30,7 +31,7 @@ func persist(item *tvshowpb.TvShow, collection *mgo.Collection) {
 }
 
 func main() {
-    session, err := mgo.Dial("mongodb://tvshow:Shae4bah@ds157320.mlab.com:57320/tvshow")
+    session, err := mgo.Dial(os.Getenv("TVSHOW_MONGO"))
     if err != nil {
         panic(err)
     }
