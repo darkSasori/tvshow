@@ -1,5 +1,6 @@
 FROM golang:alpine
 
-RUN go get -v -d https://github.com/darkSasori/tvshow.git
+RUN apk add --no-cache git \
+    && go get -v github.com/darksasori/tvshow
 
 CMD ["tvshow"]
