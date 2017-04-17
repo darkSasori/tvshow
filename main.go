@@ -55,5 +55,5 @@ func main() {
     })
 
     fmt.Println("Connected to mongodb, wait for connections")
-    http.ListenAndServe(":8000", nil)
+    http.ListenAndServe(":80", nil)
 }
