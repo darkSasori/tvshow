@@ -14,5 +14,5 @@ func main() {
     })
 
     fmt.Println("Connected to mongodb, wait for connections")
-    http.ListenAndServe(":80", nil)
+    http.ListenAndServe(":8080", nil)
 }
