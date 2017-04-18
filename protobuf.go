@@ -1,7 +1,7 @@
 package main
 
-/**
 import (
+    "os"
     "net/http"
     "fmt"
     proto "github.com/golang/protobuf/proto"
@@ -11,12 +11,15 @@ import (
     "gopkg.in/mgo.v2"
     "gopkg.in/mgo.v2/bson"
 )
-session, err := mgo.Dial(os.Getenv("TVSHOW_MONGO"))
-if err != nil {
-    panic(err)
-}
 
-func persist(item *tvshowpb.TvShow, collection *mgo.Collection) {
+func Persist(item *tvshowpb.TvShow) {
+    session, err := mgo.Dial(os.Getenv("TVSHOW_MONGO"))
+    if err != nil {
+        panic(err)
+    }
+    defer session.Close()
+    collection := session.DB("tvshow").C("shows")
+
     query := collection.Find(bson.M{
         "title": item.GetTitle(),
         "start": item.GetStart(),
@@ -27,7 +30,7 @@ func persist(item *tvshowpb.TvShow, collection *mgo.Collection) {
         return
     }
 
-    err := collection.Insert(item)
+    err = collection.Insert(item)
     if err != nil {
         panic(err)
     }
@@ -36,6 +39,7 @@ func persist(item *tvshowpb.TvShow, collection *mgo.Collection) {
 
 func ProtobufHandler(w http.ResponseWriter, r *http.Request) {
     defer r.Body.Close()
+
     item := new(tvshowpb.TvShow)
     data, err := ioutil.ReadAll(r.Body)
     if err != nil {
@@ -48,7 +52,5 @@ func ProtobufHandler(w http.ResponseWriter, r *http.Request) {
         return
     }
 
-    go persist(item, session.DB("tvshow").C("shows"))
+    go Persist(item)
 }
-*/
-
