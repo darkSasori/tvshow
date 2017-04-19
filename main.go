@@ -5,10 +5,9 @@ import (
     "fmt"
 )
 
-
 func main() {
 
-    http.HandleFunc("/protobuf", ProtobufHandler)
+    http.HandleFunc("/import", ImportHandler)
 
     http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
         fmt.Fprintf(w, "Hello world")

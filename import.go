@@ -4,15 +4,12 @@ import (
     "os"
     "net/http"
     "fmt"
-    proto "github.com/golang/protobuf/proto"
-    tvshowpb "github.com/darksasori/tvshow/tvshowpb"
-    "log"
-    "io/ioutil"
     "gopkg.in/mgo.v2"
     "gopkg.in/mgo.v2/bson"
+    "encoding/json"
 )
 
-func Persist(item *tvshowpb.TvShow) {
+func Persist(item TvShow) {
     session, err := mgo.Dial(os.Getenv("TVSHOW_MONGO"))
     if err != nil {
         panic(err)
@@ -37,19 +34,14 @@ func Persist(item *tvshowpb.TvShow) {
     fmt.Println(item.GetTitle(), " Inserted")
 }
 
-func ProtobufHandler(w http.ResponseWriter, r *http.Request) {
+func ImportHandler(w http.ResponseWriter, r *http.Request) {
     defer r.Body.Close()
+    decode := json.NewDecoder(r.Body)
 
-    item := new(tvshowpb.TvShow)
-    data, err := ioutil.ReadAll(r.Body)
+    var item TvShow
+    err := decode.Decode(&item)
     if err != nil {
-        log.Fatalln("Error", err)
-        return
-    }
-
-    if err := proto.Unmarshal(data, item); err != nil {
-        log.Fatalln("Error", err)
-        return
+        panic(err)
     }
 
     go Persist(item)
