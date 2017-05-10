@@ -1,25 +1,19 @@
 package main
 
 import (
-    "os"
     "net/http"
     "fmt"
     "log"
-    "gopkg.in/mgo.v2"
     "gopkg.in/mgo.v2/bson"
     "encoding/json"
     "errors"
 )
 
 func Persist(item TvShow) {
-    session, err := mgo.Dial(os.Getenv("TVSHOW_MONGO"))
-    if err != nil {
-        log.Panicln(err)
-    }
-    defer session.Close()
-    collection := session.DB("tvshow").C("shows")
+    connection := GetConnection()
+    defer connection.Disconnect()
 
-    query := collection.Find(bson.M{
+    query := connection.GetShows().Find(bson.M{
         "title": item.GetTitle(),
         "start": item.GetStart(),
         "channel.name": item.GetChannel().GetName(),
@@ -29,7 +23,7 @@ func Persist(item TvShow) {
         return
     }
 
-    err = collection.Insert(item)
+    err := connection.GetShows().Insert(item)
     if err != nil {
         log.Panicln(err)
     }
