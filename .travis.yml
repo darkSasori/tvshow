@@ -1,15 +1,11 @@
 language: go
+
 go:
-- 1.8.1
+    - 1.8.1
+    - master
+
 services:
-- mongodb
-before_install:
-- openssl aes-256-cbc -K $encrypted_b3ef398da182_key -iv $encrypted_b3ef398da182_iv
-  -in client-secret.json.enc -out client-secret.json -d
+    - mongodb
+
 script:
-- go test -v ./...
-deploy:
-  provider: gae
-  keyfile: client-secret.json
-  project: tvshow-165519
-  on: master
+    - go test -v ./...
