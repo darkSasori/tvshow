@@ -25,7 +25,7 @@ func TestHelloWorldHandler(t *testing.T) {
         t.Fatal(err)
     }
 
-    if string(data) != "Hello world" {
+    if string(data) != "Version 1.1.3" {
         t.Errorf("Expected 'Hello world', received '%s'", data)
     }
 }

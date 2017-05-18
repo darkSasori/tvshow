@@ -7,7 +7,7 @@ import (
 )
 
 func HelloWorldHandler(w http.ResponseWriter, r *http.Request) {
-    fmt.Fprintf(w, "Version 1.1.2")
+    fmt.Fprintf(w, "Version 1.1.3")
 }
 
 func main() {
