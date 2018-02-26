@@ -1,4 +1,0 @@
-runtime: custom
-env: flex
-env_variables:
-    TVSHOW_MONGO: mongodb://tvshow:Shae4bah@ds157320.mlab.com:57320/tvshow

@@ -1,2 +1,4 @@
 tvshow
 client-secret.json
+*.prof
+*.test
