@@ -27,7 +27,7 @@ func TestHelloWorldHandler(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	str := fmt.Sprintf("Version 1.1.3%s", os.Getenv("HOSTNAME"))
+	str := fmt.Sprintf("Version 1.1.3\n%s", os.Getenv("HOSTNAME"))
 	if string(data) != str {
 		t.Errorf("Expected 'Hello world', received '%s'", data)
 	}

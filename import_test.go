@@ -68,6 +68,7 @@ func TestImportHandlerMethodNotAllow(t *testing.T) {
 }
 
 func TestImportHandler(t *testing.T) {
+	defer ClearDb()
 	var buf bytes.Buffer
 	log.SetOutput(&buf)
 
@@ -93,11 +94,10 @@ func TestImportHandler(t *testing.T) {
 	}
 
 	time.Sleep(10 * time.Millisecond) // Wait for goroutine
-	ClearDb()
 }
 
 func TestPersist(t *testing.T) {
-	defer ClearDb()
+	ClearDb()
 	item, err := GetTvShow()
 	if err != nil {
 		t.Fatal(err)
