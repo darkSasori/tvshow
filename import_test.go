@@ -17,12 +17,12 @@ import (
 	"gopkg.in/mgo.v2/bson"
 )
 
-func GetJson() *strings.Reader {
+func GetJSON() *strings.Reader {
 	return strings.NewReader("{\"channel\": {\"name\": \"channel1\",\"title\": \"Channel\",\"group\": \"group\",\"group_title\": \"Channel Group\",\"numbers\": {\"NET\": 666}},\"title\": \"GO GO LANG GO\",\"desc\": \"Film About Go Lang\",\"duraction\": 48.0,\"start\": \"2017-04-22T05:12:00\",\"end\": \"2017-04-22T06:00:00\"}")
 }
 
 func GetTvShow() (TvShow, error) {
-	decode := json.NewDecoder(GetJson())
+	decode := json.NewDecoder(GetJSON())
 
 	var item TvShow
 	err := decode.Decode(&item)
@@ -75,7 +75,7 @@ func TestImportHandler(t *testing.T) {
 	server := httptest.NewServer(http.HandlerFunc(ImportHandler))
 	defer server.Close()
 
-	res, err := http.Post(server.URL, "applicatoin/json", GetJson())
+	res, err := http.Post(server.URL, "applicatoin/json", GetJSON())
 	if err != nil {
 		t.Fatal(err)
 	}

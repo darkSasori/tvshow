@@ -7,46 +7,47 @@ import (
 	"gopkg.in/mgo.v2"
 )
 
-var TVSHOW_MONGODB = os.Getenv("TVSHOW_MONGODB")
+// TvShowMongoDB save the mongodb uri
+var TvShowMongoDB = os.Getenv("TVSHOW_MONGODB")
 
-type MongoConnection struct {
-	Session     *mgo.Session
-	Connections int
+type mongoConnection struct {
+	session     *mgo.Session
+	connections int
 }
 
-func (mc *MongoConnection) NumConnections() int {
-	return mc.Connections
+func (mc *mongoConnection) numConnections() int {
+	return mc.connections
 }
 
-func (mc *MongoConnection) Connect() {
-	if mc.Connections == 0 {
-		session, err := mgo.Dial(TVSHOW_MONGODB)
+func (mc *mongoConnection) connect() {
+	if mc.connections == 0 {
+		session, err := mgo.Dial(TvShowMongoDB)
 		if err != nil {
 			log.Panicln(err)
 		}
-		mc.Session = session
+		mc.session = session
 	}
-	mc.Connections++
+	mc.connections++
 }
 
-func (mc *MongoConnection) Disconnect() {
-	mc.Connections--
-	if mc.NumConnections() <= 0 {
-		mc.Session.Close()
-		mc.Session = nil
+func (mc *mongoConnection) disconnect() {
+	mc.connections--
+	if mc.numConnections() <= 0 {
+		mc.session.Close()
+		mc.session = nil
 	}
 }
 
-func (mc *MongoConnection) GetShows() *mgo.Collection {
-	return mc.Session.DB("tvshow").C("shows")
+func (mc *mongoConnection) getShows() *mgo.Collection {
+	return mc.session.DB("tvshow").C("shows")
 }
 
-var mgConnect *MongoConnection
+var mgConnect *mongoConnection
 
-func GetConnection() *MongoConnection {
+func getConnection() *mongoConnection {
 	if mgConnect == nil {
-		mgConnect = &MongoConnection{}
+		mgConnect = &mongoConnection{}
 	}
-	mgConnect.Connect()
+	mgConnect.connect()
 	return mgConnect
 }

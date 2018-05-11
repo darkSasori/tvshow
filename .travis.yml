@@ -7,5 +7,9 @@ go:
 services:
     - mongodb
 
+before_install:
+    - go get -u github.com/golang/lint/golint
+
 script:
-    - go test -v ./...
+    - golint -set_exit_status
+    - go test -v

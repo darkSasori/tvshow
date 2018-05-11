@@ -9,8 +9,8 @@ import (
 	"testing"
 )
 
-func TestHelloWorldHandler(t *testing.T) {
-	server := httptest.NewServer(http.HandlerFunc(HelloWorldHandler))
+func TestStatusHandler(t *testing.T) {
+	server := httptest.NewServer(http.HandlerFunc(StatusHandler))
 	defer server.Close()
 
 	res, err := http.Get(server.URL)
